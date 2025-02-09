@@ -12,6 +12,8 @@ trait HasUser
         static::creating(function ($model) {
             if (is_null($model->user_id) && Auth::check()) {
                 $model->user_id = Auth::id();
+            } else {
+                $model->user_id = 1;
             }
         });
     }

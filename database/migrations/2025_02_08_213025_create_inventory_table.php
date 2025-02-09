@@ -13,14 +13,16 @@ return new class extends Migration {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
+            $table->string('code')->unique()->index();
             $table->string('name');
+            $table->bigInteger('inventory')->default(0);
             $table->timestamps();
         });
 
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->foreignId('item_id');
+            $table->foreignId('item_id')->index();
             $table->bigInteger('quantity')->default(0);
             $table->morphs('inventoryable');
             $table->timestamps();

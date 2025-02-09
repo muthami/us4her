@@ -15,6 +15,8 @@ use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontFamily;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -85,12 +87,27 @@ class DistributionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->label('Code'),
-                Tables\Columns\TextColumn::make('created_at')->date(),
+                Tables\Columns\TextColumn::make('code')
+                    ->icon('heroicon-o-clipboard-document')
+                    ->iconColor('success')
+                    ->fontFamily(FontFamily::Mono)
+                    ->copyable()
+                    ->copyMessage('Copied!')
+                    ->label('Dist Code'),
+                Tables\Columns\TextColumn::make('date')->date(),
                 Tables\Columns\TextColumn::make('entity.name')->label('Entity'),
                 Tables\Columns\TextColumn::make('distribution_items_count')
-                    ->label('Total Distributions')
+                    ->label('Item Categories')
                     ->counts('distributionItems')
+                    ->weight(FontWeight::Bold)
+                    ->numeric()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('distributions')
+                    ->weight(FontWeight::Bold)
+                    ->fontFamily(FontFamily::Mono)
+                    ->label('Distributed Items')
+                    ->state(fn($record) => $record->distributionItems()->sum('quantity'))
                     ->sortable(),
             ])
             ->filters([
@@ -112,10 +129,26 @@ class DistributionResource extends Resource
         return $infolist->schema([
             Section::make('Distribution')
                 ->description('Distribution details')
-                ->columns(3)
+                ->columns(4)
                 ->schema([
-                    TextEntry::make('entity.name')->label('School Name'),
-                    TextEntry::make('entity.email')->label('E-Mail Address'),
+                    TextEntry::make('code')
+                        ->icon('heroicon-o-clipboard-document')
+                        ->iconColor('success')
+                        ->fontFamily(FontFamily::Mono)
+                        ->copyable()
+                        ->copyMessage('Copied!')
+                        ->label('Distribution Code'),
+
+                    TextEntry::make('entity.name')
+                        ->icon('heroicon-o-building-library')
+                        ->label('School Name'),
+
+                    TextEntry::make('date')->date()->label('Distribution Date'),
+
+                    TextEntry::make('entity.email')
+                        ->icon('heroicon-o-at-symbol')
+                        ->label('E-Mail Address'),
+
                     TextEntry::make('user.name')->label('Created By'),
                     TextEntry::make('entity.population')->label('Total Population'),
                     TextEntry::make('created_at'),

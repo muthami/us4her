@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class DonationItem extends Model
 {
+    use HasFactory;
     protected $fillable = ['donation_id', 'item_id', 'quantity'];
 
     public function donation()
@@ -16,6 +18,6 @@ class DonationItem extends Model
 
     public function inventory()
     {
-        return $this->morphMany(Inventory::class, 'inventoryable');
+        return $this->morphOne(Inventory::class, 'inventoryable');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Distribution;
 use App\Models\Donation;
 use App\Models\Entity;
 use App\Models\Item;
@@ -17,16 +18,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'support@us4her.test',
         ]);
 
-
-        Entity::factory(10)->create();
-        Item::factory(10)->create();
-        Donation::factory(10)->create();
+//        Entity::factory(10)->create();
+//        Item::factory(10)->create();
+//
+//        Donation::factory(10)->create();
+//        Distribution::factory(10)->create();
 
     }
 }

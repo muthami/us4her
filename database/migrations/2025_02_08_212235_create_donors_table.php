@@ -24,7 +24,8 @@ return new class extends Migration {
         Schema::create('donations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->foreignId('donor_id');
+            $table->foreignId('donor_id')->index();
+            $table->string('code')->unique()->index();
             $table->date('date');
             $table->text('comments')->nullable();
             $table->timestamps();

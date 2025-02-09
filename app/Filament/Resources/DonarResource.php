@@ -11,6 +11,7 @@ use Filament\Forms;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontFamily;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,10 +25,20 @@ class DonarResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-sparkles';
 
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\Section::make('Donor Details')
+                    ->description('Donor personal details')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('name')->required()->placeholder('Donor Name'),
+                        Forms\Components\TextInput::make('phone')->required()->placeholder('Donor Phone'),
+                        Forms\Components\TextInput::make('email')->placeholder('E-Mail Address'),
+                        Forms\Components\TextInput::make('address')->placeholder('Address'),
+                    ])
             ]);
     }
 
@@ -35,16 +46,24 @@ class DonarResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('phone'),
+                Tables\Columns\TextColumn::make('name')
+                    ->icon('heroicon-o-user'),
+
+                Tables\Columns\TextColumn::make('phone')
+                    ->icon('heroicon-o-clipboard-document')
+                    ->iconColor('success')
+                    ->fontFamily(FontFamily::Mono)
+                    ->copyable()
+                    ->copyMessage('Copied!'),
+
                 Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('address'),
+                Tables\Columns\TextColumn::make('created_at')->since()->label('Created On'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

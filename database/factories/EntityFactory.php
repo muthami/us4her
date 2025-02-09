@@ -22,6 +22,7 @@ class EntityFactory extends Factory
             'name' => $this->faker->company(),
             'email' => $this->faker->unique()->companyEmail(),
             'phone' => $this->faker->phoneNumber(),
+            'type' => $this->faker->randomElement(['school', 'church', 'community', 'organization']),
             'population' => $this->faker->numberBetween(200, 500),
             'address' => $this->faker->address(),
         ];

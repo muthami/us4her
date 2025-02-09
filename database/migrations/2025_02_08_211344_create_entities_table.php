@@ -13,9 +13,11 @@ return new class extends Migration {
         Schema::create('entities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
+            $table->string('code')->unique()->index();
             $table->string('name');
-            $table->string('email');
             $table->string('phone')->nullable();
+            $table->string('email');
+            $table->string('type')->default('school');
             $table->bigInteger('population')->default(0);
             $table->string('address')->nullable();
             $table->timestamps();

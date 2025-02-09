@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('entity_id');
+            $table->string('code')->unique()->index();
             $table->date('date')->default(now());
             $table->text('comments')->nullable();
             $table->timestamps();

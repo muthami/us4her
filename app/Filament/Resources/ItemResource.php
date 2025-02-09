@@ -8,6 +8,7 @@ use App\Models\Item;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontFamily;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,8 +36,16 @@ class ItemResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('code')
+                    ->icon('heroicon-o-clipboard-document')
+                    ->iconColor('success')
+                    ->fontFamily(FontFamily::Mono)
+                    ->copyable()
+                    ->copyMessage('Copied!')
+                    ->label('Product Code'),
                 Tables\Columns\TextColumn::make('name')->label('Product Name'),
                 Tables\Columns\TextColumn::make('user.name')->label('Created By'),
+                Tables\Columns\TextColumn::make('inventory')->numeric(),
                 Tables\Columns\TextColumn::make('updated_at')->since(),
             ])
             ->filters([

@@ -19,7 +19,7 @@ class DonorFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'name' => $this->faker->firstName(),
+            'name' => $this->faker->firstName() . " " . $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
             'address' => $this->faker->address(),

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\DonationResource\Pages;
 
 use App\Filament\Resources\DonationResource;
+use App\Filament\Resources\DonationsResource\Widgets\DonationsChart;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 

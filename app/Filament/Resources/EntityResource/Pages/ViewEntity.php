@@ -4,16 +4,16 @@ namespace App\Filament\Resources\EntityResource\Pages;
 
 use App\Filament\Resources\EntityResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ViewRecord;
 
-class ListEntities extends ListRecords
+class ViewEntity extends ViewRecord
 {
     protected static string $resource = EntityResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()->outlined()->icon('heroicon-o-plus'),
+            Actions\EditAction::make()->button()->outlined()->label('Edit Entity'),
         ];
     }
 }

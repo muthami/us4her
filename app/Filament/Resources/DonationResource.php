@@ -12,6 +12,8 @@ use Filament\Forms;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontFamily;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -88,14 +90,25 @@ class DonationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')->date(),
-                Tables\Columns\TextColumn::make('donor.name'),
+                Tables\Columns\TextColumn::make('code')
+                    ->icon('heroicon-o-clipboard-document')
+                    ->iconColor('success')
+                    ->fontFamily(FontFamily::Mono)
+                    ->copyable()
+                    ->copyMessage('Copied!'),
+
+                Tables\Columns\TextColumn::make('created_at')->date()->label('Donation Date'),
+                Tables\Columns\TextColumn::make('donor.name')
+                    ->icon('heroicon-o-user'),
+
                 Tables\Columns\TextColumn::make('donation_items_count')
-                    ->label('Total Donations')
+                    ->label('Categories')
                     ->counts('donationItems')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('total_donations')
+                    ->weight(FontWeight::Bold)
+                    ->fontFamily(FontFamily::Mono)
                     ->label('Donated Items')
                     ->state(fn($record) => $record->donationItems()->sum('quantity'))
                     ->sortable(),
@@ -104,6 +117,7 @@ class DonationResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make()->iconButton(),
                 Tables\Actions\EditAction::make()->iconButton(),
             ])
             ->bulkActions([
@@ -125,6 +139,7 @@ class DonationResource extends Resource
         return [
             'index' => Pages\ListDonations::route('/'),
             'create' => Pages\CreateDonation::route('/create'),
+            'view' => Pages\ViewDonation::route('/{record}/view'),
             'edit' => Pages\EditDonation::route('/{record}/edit'),
         ];
     }

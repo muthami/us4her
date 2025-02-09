@@ -17,9 +17,29 @@ class ItemFactory extends Factory
      */
     public function definition(): array
     {
+        $sanitary_items = [
+            "Sanitary Pads",
+            "Tampons",
+            "Menstrual Cups",
+            "Panty Liners",
+            "Period Underwear",
+            "Disposable Wipes",
+            "Hot Water Bottle",
+            "Feminine Wash",
+            "Disposable Gloves",
+            "Hand Sanitizer"
+        ];
+
+        $randomItem = $this->faker->randomElement($sanitary_items);
+
+        if (\App\Models\Item::where('name', $randomItem)->exists()) {
+            $randomItem = $this->faker->unique()->word;
+        }
+
         return [
             'user_id' => User::factory(),
-            'name' => $this->faker->realText(24),
+            'name' => $randomItem,
         ];
+
     }
 }

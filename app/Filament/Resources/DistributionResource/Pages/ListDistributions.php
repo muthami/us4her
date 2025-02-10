@@ -13,7 +13,10 @@ class ListDistributions extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->outlined()
+                ->icon('heroicon-o-plus')
+                ->label('Create Distribution'),
         ];
     }
 }

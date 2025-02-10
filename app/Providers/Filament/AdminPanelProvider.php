@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
+use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -18,6 +20,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -29,8 +32,9 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->spa()
             ->unsavedChangesAlerts()
-//            ->topNavigation()
             ->login()
+            ->sidebarWidth('16rem')
+            ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Rose,
             ])
@@ -43,6 +47,12 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+            ])
+            ->userMenuItems([
+                'profile' => \Filament\Navigation\MenuItem::make()
+                    ->label(fn() => auth()->user()->name)
+                    ->url(fn (): string => EditProfilePage::getUrl())
+                    ->icon('heroicon-m-user-circle')
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -57,6 +67,12 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])->plugins([
+                FilamentEditProfilePlugin::make()
+                    ->setTitle('My Profile')
+                    ->setNavigationGroup('Config')
+                    ->setNavigationLabel('My Profile')
+                    ->setIcon('heroicon-o-user')
             ]);
     }
 }

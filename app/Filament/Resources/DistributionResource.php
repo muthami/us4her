@@ -17,17 +17,15 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\IconSize;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DistributionResource extends Resource
 {
     protected static ?string $model = Distribution::class;
-    protected static ?string $navigationGroup = 'Distributions';
-
     protected static ?string $navigationIcon = 'heroicon-o-bars-arrow-up';
+    protected static ?string $navigationGroup = 'Operations';
 
 
     public static function form(Form $form): Form
@@ -36,13 +34,13 @@ class DistributionResource extends Resource
             ->schema([
                 Wizard::make([
                     Wizard\Step::make('Distribution')
-                        ->icon('heroicon-m-shopping-bag')
+                        ->icon('heroicon-o-bars-arrow-up')
                         ->description('Create distribution entity')
                         ->columns(2)
                         ->schema([
                             Forms\Components\Select::make('entity_id')
                                 ->label('Entity/School')
-//                                ->required()
+                                ->required()
                                 ->placeholder('select entity')
                                 ->options(Entity::all()->pluck('name', 'id'))
                                 ->searchable(),
@@ -57,7 +55,7 @@ class DistributionResource extends Resource
                         ]),
 
                     Wizard\Step::make('Distribution Items')
-                        ->icon('heroicon-m-shopping-bag')
+                        ->icon('heroicon-o-squares-plus')
                         ->description('Add distributed items')
                         ->schema([
                             Forms\Components\Repeater::make('distribution_items')
@@ -150,19 +148,14 @@ class DistributionResource extends Resource
                         ->label('E-Mail Address'),
 
                     TextEntry::make('user.name')->label('Created By'),
-                    TextEntry::make('entity.population')->label('Total Population'),
-                    TextEntry::make('created_at'),
+                    TextEntry::make('entity.population')
+                        ->weight(FontWeight::Bold)
+                        ->state(fn($record) => $record->distributionItems()->sum('quantity'))
+                        ->label('Total Distribution'),
+
+                    TextEntry::make('created_at')->date()->label('Date Created'),
                     TextEntry::make('updated_at')->since(),
                     TextEntry::make('comments')->placeholder('-:-')->columnSpanFull(),
-                ]),
-
-            Section::make('Distribution Stats')
-                ->description('Distribution data stats')
-                ->columns(3)
-                ->schema([
-                    TextEntry::make('distributionItems_count')->label('Number of Items')->placeholder(0),
-                    TextEntry::make('distributionItems_count')->label('Total Distributions')->placeholder(0),
-                    TextEntry::make('distributionItems_count')->label('Distribution vs Pupils Ration')->placeholder(0),
                 ]),
 
             Section::make('Distribution Items')
@@ -170,10 +163,21 @@ class DistributionResource extends Resource
                 ->columns(3)
                 ->schema([
                     RepeatableEntry::make('distributionItems')
-                        ->columns(2)
+                        ->columns(4)
                         ->schema([
+                            TextEntry::make('item.code')
+                                ->icon('heroicon-o-clipboard-document')
+                                ->iconColor('success')
+                                ->fontFamily(FontFamily::Mono)
+                                ->copyable()
+                                ->copyMessage('Copied!')
+                                ->label('Item Code'),
+
                             TextEntry::make('item.name'),
-                            TextEntry::make('quantity')
+                            TextEntry::make('quantity'),
+
+                            TextEntry::make('item.inventory')->label('Current Inventory')
+                            ->weight(FontWeight::Bold),
                         ])->columnSpanFull()
                 ])
         ]);

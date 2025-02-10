@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontFamily;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,15 +21,24 @@ class ItemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-squares-plus';
 
+    protected static ?string $navigationGroup = 'Config';
+
+    protected static ?int $navigationSort = 1;
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Section::make('Item Details')
-                ->description('Enter product/item details')
-                ->schema([
-                    Forms\Components\TextInput::make('name')->label('Product Name')
-                ])
+                    ->description('Enter product/item details')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')->label('Product Name')
+                    ])
             ]);
     }
 
@@ -45,7 +55,10 @@ class ItemResource extends Resource
                     ->label('Product Code'),
                 Tables\Columns\TextColumn::make('name')->label('Product Name'),
                 Tables\Columns\TextColumn::make('user.name')->label('Created By'),
-                Tables\Columns\TextColumn::make('inventory')->numeric(),
+                Tables\Columns\TextColumn::make('inventory')
+                    ->fontFamily(FontFamily::Mono)
+                    ->weight(FontWeight::Bold)
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('updated_at')->since(),
             ])
             ->filters([

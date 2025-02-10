@@ -13,7 +13,9 @@ class ViewDistribution extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make()->button()->outlined()->label('Edit Distribution'),
+            Actions\EditAction::make()->button()
+                ->icon('heroicon-o-pencil-square')
+                ->outlined()->label('Edit Distribution'),
         ];
     }
 }

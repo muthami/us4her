@@ -13,7 +13,17 @@ class EditEntity extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\ViewAction::make()
+                ->icon('heroicon-o-arrow-uturn-left')
+                ->button()
+                ->outlined()
+                ->label('Go Back'),
+
+            Actions\DeleteAction::make()
+                ->icon('heroicon-o-trash')
+                ->button()
+                ->requiresConfirmation()
+                ->outlined()
         ];
     }
 }

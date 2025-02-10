@@ -22,18 +22,15 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class DonationResource extends Resource
 {
     protected static ?string $model = Donation::class;
-
-    protected static ?string $navigationGroup = 'Donors';
     protected static ?string $navigationIcon = 'heroicon-o-bars-arrow-down';
-
-
+    protected static ?string $navigationGroup = 'Operations';
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Wizard::make([
                     Wizard\Step::make('Create Donation')
-                        ->icon('heroicon-m-shopping-bag')
+                        ->icon('heroicon-o-bars-arrow-down')
                         ->description('Create donation entry')
                         ->columns(2)
                         ->schema([
@@ -54,7 +51,7 @@ class DonationResource extends Resource
                         ]),
 
                     Wizard\Step::make('Donation Items')
-                        ->icon('heroicon-m-shopping-bag')
+                        ->icon('heroicon-o-squares-plus')
                         ->description('Add donation items')
                         ->schema([
                             Forms\Components\Repeater::make('donation_items')

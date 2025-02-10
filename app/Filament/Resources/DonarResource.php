@@ -21,10 +21,14 @@ class DonarResource extends Resource
 {
     protected static ?string $model = Donor::class;
 
-    protected static ?string $navigationGroup = 'Donors';
+    protected static ?string $navigationGroup = 'Config';
 
     protected static ?string $navigationIcon = 'heroicon-o-sparkles';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 
     public static function form(Form $form): Form
     {

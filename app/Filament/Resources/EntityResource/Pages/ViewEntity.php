@@ -13,7 +13,9 @@ class ViewEntity extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make()->button()->outlined()->label('Edit Entity'),
+            Actions\EditAction::make()->button()
+                ->icon('heroicon-o-pencil-square')
+                ->outlined()->label('Edit Entity'),
         ];
     }
 }
